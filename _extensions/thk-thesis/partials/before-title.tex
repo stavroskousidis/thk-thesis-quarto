@@ -1,0 +1,33 @@
+%% --- thk-thesis: packages that must be loaded after hyperref ---------------
+\usepackage[toc,symbols,acronyms,nopostdot,nogroupskip]{glossaries}
+\setacronymstyle{long-short}
+% No external indexing tool needed: the lists are sorted by LaTeX itself.
+\makenoidxglossaries
+
+%% --- Student files (optional, loaded if they exist) -------------------------
+\IfFileExists{tex/macros.tex}{\input{tex/macros.tex}}{}
+\IfFileExists{tex/glossary.tex}{\input{tex/glossary.tex}}{}
+
+%% --- thk-thesis: theorem-like statements ------------------------------------
+%% Customization 3: Quarto defines theorem, lemma, ... (only those used) above,
+%% each with its own counter. Here they share one counter per chapter:
+%% Definition 2.1, Theorem 2.2, Lemma 2.3. Algorithms keep their own counter.
+\usepackage{amsthm}
+\makeatletter
+\newcounter{thkstatement}[chapter]
+\renewcommand{\thethkstatement}{\thechapter.\arabic{thkstatement}}
+\renewcommand{\theHthkstatement}{\thechapter.\arabic{thkstatement}}
+\@for\thk@env:={theorem,lemma,corollary,proposition,conjecture,definition,%
+    example,exercise,refremark,refsolution}\do{%
+  \@ifundefined{c@\thk@env}{}{%
+    \expandafter\let\csname c@\thk@env\endcsname\c@thkstatement
+    \expandafter\let\csname the\thk@env\endcsname\thethkstatement}}
+\makeatother
+
+%% --- thk-thesis: List of Algorithms ------------------------------------------
+%% Quarto's algorithms (`::: {#alg-...}`) are statements without a list of
+%% their own; thk-thesis.lua writes each one into the file .loa.
+\addtotoclist[thk-thesis]{loa}
+\setuptoc{loa}{totoc}
+\newcommand*{\listofthkalgorithms}{\listoftoc[List of Algorithms]{loa}}
+\DeclareTOCStyleEntry[level=1,indent=0pt,numwidth=2.3em,pagenumberwidth=2.4em]{tocline}{algorithm}

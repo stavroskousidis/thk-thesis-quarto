@@ -1,0 +1,35 @@
+# Quarto output
+/_book/
+/.quarto/
+/_freeze/
+# LaTeX intermediates (keep-tex: true)
+/*.tex
+*.aux
+*.log
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+*.toc
+*.out
+*.glo
+*.acn
+*.slo
+# Editors / OS
+.DS_Store
+.vscode/
+*.Rproj.user/
+
+**/*.quarto_ipynb
+*.lo[fpt]
+*.gl[gos]
+*.ac[nr]
+*.sl[gos]
+*.ist
+
+# marimo output
+/_generated/
+*.pdf.md
+__pycache__/
+/_extensions/marimo/assets/
+/_extensions/marimo/marimo-engine-v*.js

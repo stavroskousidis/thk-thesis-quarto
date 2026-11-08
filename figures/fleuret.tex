@@ -1,0 +1,22 @@
+% A pgfplots figure, included from chapters/03-layout.qmd.
+% Paths are relative to the project root.
+\begin{tikzpicture}
+  \begin{axis}[
+      % axes at the left and bottom, outside the data: the tick labels never
+      % collide with points (some measured values are negative)
+      axis lines=left,
+      xmin=-0.05, xmax=1.05, ymin=-0.15, ymax=1.1,
+      xtick={0, 0.2, ..., 1}, ytick={0, 0.2, ..., 1},
+      xlabel={$x$}, ylabel={$y$},
+      ylabel style={rotate=-90},
+      width=0.7\textwidth, height=0.5\textwidth,
+    ]
+    \draw[gray!50, thin] (axis cs:-0.05,0) -- (axis cs:1.05,0); % y = 0
+    \addplot[THRed, thick, domain=0:0.5] {0};
+    \addplot[THRed, thick, domain=0.5:1, samples=100] {4*(x-0.5)^2};
+    \addplot[THRed, only marks, mark=*]
+      table[col sep=comma, x index=0, y index=1] {data/pointsFleuret.csv};
+    \addplot[THPurple, only marks, mark=x, mark options={scale=2}]
+      table[col sep=comma, x index=0, y index=2] {data/pointsFleuret.csv};
+  \end{axis}
+\end{tikzpicture}

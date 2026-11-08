@@ -1,0 +1,199 @@
+# Citations and References {#sec-literature}
+
+Third party ideas must always be identified. Above all, they must be verifiable
+and findable. The technique of citing and referencing serves this purpose.
+
+Different disciplines and degree programs follow specific citation conventions.
+Important information on common citation systems and styles can be found in the
+Writing Center's e-learning courses[^ilu4].
+
+The sections @sec-citations-general and @sec-bibliography-general give general
+advice on citing, which applies whatever tool you use. Boxes titled *In this
+template* say what the template does by default and how to change it.
+@sec-citing-quarto explains the commands.
+
+## Citations {#sec-citations-general}
+
+Quotation marks ("...") are used to indicate text passages that have been
+copied verbatim.
+
+If your quote already contains a quotation, you must replace the "double
+quotation marks" in the text with 'single quotation marks'. See also
+@sec-special-cases.
+
+### References
+
+A source reference must be created for all citations. The source reference is a
+short notation in the citation style which refers to the complete reference in
+the bibliography. References can be made *either* in the continuous text
+(Anglo-American citation style or Harvard style) *or* via a footnote at the
+bottom of the page *or* in an endnote at the end of the entire text.
+Different professional conventions apply here, which must be observed.
+
+If you opt for short references in the text flow or for endnotes, the footnote
+area can be used for comments and for references to passages in your own text.
+
+*Note the positions of the superscript and punctuation marks:*
+
+If the literal quotation itself ends with a period, this is placed before the
+closing quotation mark. The superscript then follows directly afterwards without
+a space. A period is then omitted for the sentence itself.
+
+If the literal quotation does not end with a period, there are two cases: If the
+quotation is in the middle of your own sentence, the superscript follows
+directly after the quotation marks. If the quotation is at the end of your own
+sentence, first add the quotation marks, then your own period and only then the
+superscript.
+
+To ensure that the source references remain unambiguous even if several short
+titles or year numbers of an author have the same name, the year numbers are
+given an additional small letter.
+
+::: {.callout-note title="In this template"}
+References are short labels in square brackets in the text, e.g.
+[@knuth:tex] (biblatex style `alphabetic`). There are no footnote citations,
+and the superscript rules above do not apply. Labels that would be equal are
+told apart automatically (e.g. [BF01a] and [BF01b]). For author-year references
+in the text, set `biblio-style: authoryear`; for references in footnotes, add
+`autocite=footnote` to `biblatexoptions` as well (both in `_quarto.yml`,
+under `format: thk-thesis-pdf:`). Agree on the style with your supervisor.
+:::
+
+### Ibid
+
+Today, reference managers make referencing via *ibid* superfluous, as you are
+no longer forced to type out the same information repeatedly. If you
+nevertheless decide to use this method (e.g. on the advice of your examiner),
+we strongly recommend that you only insert ibid. in the final editorial phase,
+as the references are only clear then.
+
+::: {.callout-note title="In this template"}
+Never type *ibid.* by hand. If it is required, use a biblatex style that
+inserts it automatically, e.g. `biblio-style: authoryear-ibid` or
+`verbose-ibid`.
+:::
+
+### Secondary Quotations
+
+Secondary quotations are quotations from an author without having checked the
+original source for the context. Secondary citations are only permitted if the
+original source cannot be obtained. In the case of generally accessible
+scientific literature, secondary quotations should be avoided at all costs. If
+it is not possible to compare a quotation with the original text, then you
+should note *cited by* (followed by the source from which the quotation was
+taken) or *cited in*. This occurs, for example, when quoting facts from
+textbooks on the history of science.
+
+### Citing Figures and Tables {#sec-ref-figures}
+
+The same guidelines apply here as for text quotations, i.e. there are also
+verbatim and modified reproductions. In the case of a verbatim reproduction, you
+can use an illustration e.g. in PowerPoint or a drawing/vector program.
+Copyright must be taken into account when scanning; this is only permitted if
+the author or publisher has granted permission -- usually for a fee. In this
+case, the source reference must be made in the same way as for a literal
+quotation. For your own changes, an addition must be added to the source
+reference (e.g. *with minor changes*, *with own calculations*, etc.).
+
+Because graphics are often copied, it is advisable to mark your own graphics or
+illustrations as such.
+
+In table and figure captions, the source is always given directly below the
+figure and not in a footnote or endnote. However, the source information does
+not belong in the list of figures and tables. See @sec-captions.
+
+## Citing with Quarto {#sec-citing-quarto}
+
+All sources are stored in BibTeX files in the folder `bib/`. Your own entries
+go into `bib/references.bib`; you can maintain this file by hand or export it
+from a reference manager such as Zotero. In the text, you cite with the key of
+the entry:
+
+| Markdown                         | Result                         |
+|----------------------------------|--------------------------------|
+| `[@knuth:tex]`                   | [@knuth:tex]                   |
+| `[@knuth:tex, p. 33]`            | [@knuth:tex, p. 33]            |
+| `[@knuth:tex; @kottwitz:tikz]`   | [@knuth:tex; @kottwitz:tikz]   |
+| `@knuth:tex says`                | @knuth:tex says                |
+
+: Citation syntax in Markdown {#tbl-citations}
+
+The citation style is a biblatex style and is set with `biblio-style` in
+`_quarto.yml`. This template uses `alphabetic`, which is common in computer
+science and mathematics; `numeric`, `authoryear` or `ieee` are other choices.
+Clarify with your supervisor which style to use. A page number goes after a
+comma: `[@knuth:tex, p. 33]`; biblatex then typesets "p." itself.
+
+Every citation key must exist in one of the bibliography files. Before each
+render, the script that prepares CryptoBib (@sec-cryptobib) also lists keys
+that it cannot find, with file and line; LaTeX then shows the key in bold
+instead of a reference.
+
+### Cryptography: CryptoBib {#sec-cryptobib}
+
+For papers on cryptography, you do not need to type the entries yourself.
+[CryptoBib](https://cryptobib.di.ens.fr) contains BibTeX entries for all
+papers of the IACR conferences and journals, many other security conferences
+and the Cryptology ePrint Archive, with consistent keys. The key consists of
+the venue, the first letters of the authors' names and the year, e.g.
+`C:BonFra01` for the identity-based encryption scheme of Boneh and Franklin at
+CRYPTO 2001 and `EPRINT:BonFra01` for its full version on ePrint. You cite
+them like any other entry: `[@C:BonFra01]`. You can find the key of a paper
+with the search on the CryptoBib website.
+
+Run `make cryptobib` once to add CryptoBib to your repository as a git
+submodule in `bib/cryptobib/`. As the database is very large (more than 90 000
+entries), the script `scripts/cryptobib-subset.ts` copies only the entries you
+actually cite into `bib/cryptobib.bib` every time you render. You never have to
+edit this file. To get the latest version of CryptoBib, run
+`make cryptobib-update`.
+
+## Bibliography {#sec-bibliography-general}
+
+The structure of the mandatory bibliography is explained below.
+
+### Content and Order of the Bibliography {#sec-bib-content}
+
+In the bibliography, all publications used are listed in alphabetical order by
+author's name. The bibliography must include all sources cited in the text, but
+no additional sources. If works are published not only in printed form but also
+electronically, the bibliography should follow the printed version, unless the
+digital document has a fixed document number (DOI). If a letter abbreviation is
+used in the references in the text section instead of the title, this should
+also be indicated in the bibliography.
+
+Several works published by one author within one year must be differentiated.
+For the short titles in the text, the years must therefore be distinguished by
+appending lower case letters. However, the year in the source citation remains
+unchanged without appended letters. The order of a, b, c etc. depends on the
+order of the source references. Whether first names are abbreviated or written
+out in full depends on the conventions of your subject. However, please remain
+consistent.
+
+::: {.callout-note title="In this template"}
+biblatex lists exactly the cited sources, sorted alphabetically, and adds the
+letters itself. The one exception is the reading list at the end of this
+template: it comes from `nocite` in `_quarto.yml`, which adds uncited entries
+on purpose. Remove `nocite` and the note in `references.qmd` for your thesis.
+:::
+
+### References in the Bibliography
+
+The order in the notation of the bibliography depends on the document type and
+subject-specific conventions. It is therefore different for monographs than for
+journal articles, and again different in chemistry than in the humanities or
+mathematics. There are also no uniform standards for punctuation.
+
+The data for a bibliography can be found on the title page of a book. This is
+not the book cover, but a printed sheet at the beginning of the book with the
+most important information identifying the work and book. First, the author or
+editor is named together with the title, followed by publication and printing
+information such as the publisher, place and year of publication. Although there
+is a DIN rule for title lettering, it is interpreted very differently.
+
+In the e-learning courses of the Writing Center[^ilu4] you will find further
+information on the bibliographic information for different types of
+publications. The following bibliography is just one example of a possible
+format.
+
+[^ilu4]: <https://ilu.th-koeln.de/goto.php?target=cat_52109&client_id=thkilu>

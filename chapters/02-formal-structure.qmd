@@ -1,0 +1,111 @@
+# Formal Structure {#sec-formal}
+
+In this chapter you will find basic information on the formal structure of your
+thesis.
+
+## Sequence {#sec-sequence}
+
+A scientific paper usually consists of the following parts:
+
+1. Cover sheet
+2. Abstract (optional)
+3. Table of contents
+4. List of figures and tables (also common at the end)
+5. List of abbreviations (also common at the end)
+6. Introduction
+7. Main part
+8. Summary/conclusions
+9. Bibliography
+10. Appendices (optional)
+11. Declaration
+
+In this template, the cover sheet and the declaration are generated from the
+`thesis:` block in `_quarto.yml`, the lists are inserted automatically after
+the abstract, and the order of the chapters is defined in the `book:` block of
+the same file.
+
+## Cover Page
+
+The cover page includes: title of the thesis, type of thesis, author,
+matriculation number, submission date, supervisor and second reviewer. For
+theses longer than 15 pages, the cover page is included in the number of pages
+but not numbered.
+
+The cover page of this template shows placeholders ("Bachelor's or Master's
+thesis"). Set the type of your thesis and your degree in `_quarto.yml`:
+
+```yaml
+thesis:
+  type: master                  # or: bachelor
+  degree: "Master of Science"   # or e.g. "Bachelor of Science"
+```
+
+The type `bachelor` or `master` gives "Bachelor's thesis" or "Master's
+thesis" on the cover page.
+
+## Table of Contents {#sec-list-of-contents}
+
+We recommend a decimal structure as laid out in this document. If subheadings
+are used within a chapter, there must be at least two: where there is a 2.1,
+there must be a 2.2.
+
+The table of contents always contains the page references for the listed items;
+however, it is not listed in the table of contents itself. The pages that the
+table of contents itself takes up can be counted in Roman numerals.
+
+For a thesis, a structure of at least three levels is usually used. As a rule,
+only up to four levels are shown in the table of contents. However, you must
+find out about and consider the conventions in your subject.
+
+## List of Figures and Tables
+
+Figures and tables are listed in corresponding directories. In this template,
+they appear directly after the table of contents. The corresponding pages can
+then be numbered in Roman numerals. However, the lists can also be placed at
+the end of the work before or after the bibliography. In this case, they are
+given regular page numbers.
+
+## List of Abbreviations
+
+The number of abbreviations should be kept to a minimum. The list of
+abbreviations only contains important subject-specific abbreviations in
+alphabetical order, in particular abbreviations of organisations, associations
+or laws. Common abbreviations such as i.\ a., e.\ g., etc. are not included.
+
+For the technical implementation, see also @sec-glossaries.
+
+## Bibliography
+
+The bibliography is organized alphabetically by author name. It contains all
+sources cited in the text -- and only these. Several writings by the same person
+are organized by year of publication. You must distinguish between writings by
+the same person from the same year of publication. In engineering, a number or
+author abbreviation is often placed before the name in square brackets. You can
+learn more about this and other important rules of citation in the Writing
+Centre's e-learning courses[^ilu].
+
+Appropriate software tools such as Citavi or Zotero, which are compatible with
+various word processing programs, are suitable for managing the literature
+used. Zotero, for example, can export your library as a `.bib` file that is
+updated automatically (Better BibTeX plugin).
+
+## Spelling, Grammar
+
+When submitting your work, make sure that your English is flawless.
+If errors impair readability, this can have a negative impact on your grade. It
+is therefore essential that you use a spell checker, even if it does not detect
+all errors. Most editors used with Quarto (VS Code, Positron, RStudio) offer one.
+
+For those who feel unsure about this topic, we recommend the Writing Centre's
+e-learning courses[^ilu]. If necessary, please also contact the representative
+for students with disabilities[^disab].
+
+## Scope of the Thesis
+
+All subjects specify binding upper and lower limits that must generally be
+adhered to. Indexes and appendices are generally not counted. In individual
+cases -- especially in the case of empirical work -- deviating agreements can
+be made with the supervisor.
+
+[^ilu]: <https://ilu.th-koeln.de/goto.php?target=cat_52109&client_id=thkilu>
+[^disab]: <https://www.th-koeln.de/studium/studieren-mit-beeintraechtigung_169.php>

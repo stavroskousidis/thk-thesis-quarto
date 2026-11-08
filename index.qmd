@@ -1,0 +1,21 @@
+# Abstract {.unnumbered .unlisted}
+
+The abstract (if required) summarizes the presentation of the problem, the
+method(s) used and the most important result on about 1/2 to 1 page.
+
+You can find out how to write a successful abstract in the seminars or by
+consulting the Center for Soft Skills Development[^schreibzentrum].
+
+Key words/key phrases: if necessary, provide 3 to 10 key words.
+
+[^schreibzentrum]: <https://www.th-koeln.de/schreibzentrum>
+
+<!--
+Everything in this file is front matter (Roman page numbers). Add further
+unnumbered chapters here if needed, e.g. acknowledgements:
+
+# Acknowledgements {.unnumbered}
+
+The table of contents and the other lists are inserted automatically before
+the first numbered chapter.
+-->

@@ -1,0 +1,127 @@
+name: Render thesis
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+# Read-only by default. Only the release job below gets write access.
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: true     # bib/cryptobib, if set up
+          persist-credentials: false
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "1.11.9"    # pinned; see "Versions" in README.md
+          tinytex: true
+
+      - uses: astral-sh/setup-uv@v6   # Python packages for marimo cells
+        with:
+          enable-cache: false
+
+      - name: Install Biber and LaTeX packages
+        run: |
+          echo "$HOME/.TinyTeX/bin/x86_64-linux" >> "$GITHUB_PATH"
+          export PATH="$HOME/.TinyTeX/bin/x86_64-linux:$PATH"
+          make tinytex-packages
+
+      - name: Check prerequisites
+        run: make check
+
+      - name: Test CryptoBib extraction
+        run: make test-bib
+
+      - name: Render PDF
+        run: make pdf
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: thesis-pdf
+          path: _book/*.pdf
+
+  # Template smoke tests (declaration variants, invalid settings). Run only in
+  # the template repository itself, not in thesis repositories created from it.
+  smoke-test:
+    if: github.repository == 'stavroskousidis/thk-thesis-quarto'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "1.11.9"
+          tinytex: true
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: false
+      - name: Install Biber and LaTeX packages
+        run: |
+          echo "$HOME/.TinyTeX/bin/x86_64-linux" >> "$GITHUB_PATH"
+          export PATH="$HOME/.TinyTeX/bin/x86_64-linux:$PATH"
+          make tinytex-packages
+      - run: make test-render
+
+  # Attach the PDF to a GitHub release -- only for version tags pushed to this
+  # repository, never for pull requests or branches.
+  release:
+    needs: render
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: thesis-pdf
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: "*.pdf"
+
+  # Public preview of the rendered TEMPLATE on GitHub Pages
+  # (https://stavroskousidis.github.io/thk-thesis-quarto/). Only in the template
+  # repository and only for main -- never in thesis repositories created from it.
+  pages:
+    needs: render
+    if: >-
+      github.repository == 'stavroskousidis/thk-thesis-quarto' &&
+      github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+          sparse-checkout: .github/pages
+      - uses: actions/download-artifact@v4
+        with:
+          name: thesis-pdf
+          path: site
+      - name: Assemble preview page
+        run: |
+          sed -e "s/__COMMIT__/${GITHUB_SHA::7}/" -e "s/__DATE__/$(date -u +%Y-%m-%d)/" \
+            .github/pages/index.html > site/index.html
+          ls -l site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4

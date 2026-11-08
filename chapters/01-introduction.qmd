@@ -1,0 +1,52 @@
+# Introduction {#sec-introduction}
+
+This document template can be used as a model for academic theses. It is based on
+guidelines created by Prof. Dr. Stephan Freichel as Chairman of the Examination
+Board for the B.\ Sc. Logistics and M.\ Sc. Supply Chain and Operations
+Management degree programs at the Faculty of Automotive Systems and Production.
+
+The text in this template describes general formal requirements, in particular
+for the table of contents, the insertion of references and the compilation of a
+bibliography.
+
+The template can be used interdisciplinary as a sample file for theses at TH
+Köln. However, when using it, you must make sure that it complies with the
+conventions of your degree program.
+
+The content of the document was revised and modified by Maria-Anna Worth
+(retired) and Susanne Neuzerling (Department of Planning and Controlling) to make
+it suitable for use across all subjects. A further revision and update was
+carried out by Andreas Bissels (Writing Centre). Ms. Katharina Bata created the
+document template in LaTeX. The LaTeX template was revised in 2023 by André
+Ulrich and Jan Salmen and supplemented with various notes, specifically on design
+with LaTeX. The document was translated by Lynne Lörler (Language Learning
+Center). In 2026 it was reorganised as a Quarto template by Stavros Kousidis; the
+notes on typesetting were rewritten for Quarto (see @sec-layout). This Quarto
+version is maintained independently and is not an official TH Köln
+publication.
+
+To prepare for your final thesis, we recommend that you take advantage of the
+services offered by the Writing Center of the Center for Soft Skills
+Development[^1]; these include both counselling[^2] and courses[^3] on academic
+writing. The Writing Center is your point of contact at TH Köln for questions
+relating to academic writing. Additionally, the Language Learning Center[^4]
+offers counselling[^5] on writing in English.
+
+Your thesis lives in a git repository that was created from this template. The
+history of the repository keeps the original template text available, so you can
+simply overwrite the chapters with your own content. If you want to look
+something up later, the template repository itself remains available as well.
+
+*Please note: This template does not supersede the specific requirements of the
+respective examination boards. If there are special formal requirements in your
+subject, these apply.*
+
+\begin{flushright}
+Cologne, November 2026
+\end{flushright}
+
+[^1]: <https://www.th-koeln.de/schreibzentrum>
+[^2]: <https://www.th-koeln.de/schreibberatung>
+[^3]: <https://www.th-koeln.de/schreibzentrum/seminare>
+[^4]: <https://www.th-koeln.de/sprachlernzentrum>
+[^5]: <https://www.th-koeln.de/internationales/schreibberatung-englisch-fuer-studierende_84724.php>

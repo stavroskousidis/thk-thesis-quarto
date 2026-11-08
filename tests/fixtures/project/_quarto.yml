@@ -1,0 +1,15 @@
+project:
+  type: book
+book:
+  title: "Fixture"
+  chapters:
+    - index.qmd
+    - part: "Main"
+      chapters:
+        - chapters/a.qmd   # comment with chapters/orphan.qmd must not count
+  appendices:
+    - chapters/b.qmd
+bibliography:
+  - bib/references.bib
+nocite: |
+  @C:Nocite11, @own:Nocite

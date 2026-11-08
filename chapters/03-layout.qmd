@@ -1,0 +1,841 @@
+---
+# This chapter contains executable marimo cells (see @sec-marimo).
+engine: marimo
+pyproject: |
+  requires-python = "==3.13.*"
+  dependencies = [
+    "marimo==0.25.2",
+    "matplotlib==3.11.2",
+    "pandas==3.1.1",
+    "tabulate==0.10.0",
+  ]
+---
+
+# Layout: Typesetting with Quarto {#sec-layout}
+
+This template uses [Quarto](https://quarto.org), an open-source publishing
+system. You write your text in *Markdown*, a plain-text format with a very small
+set of formatting rules. Quarto converts it with Pandoc into LaTeX and LaTeX
+produces the PDF. You thus get the typographic quality of LaTeX, which is
+based on TeX, developed by Donald Knuth [@knuth:tex], without having to write
+LaTeX yourself. Wherever Markdown is not sufficient, you can still use LaTeX
+directly. Some further advantages over conventional word processing are:
+
+Free/platform-independent
+: Quarto and LaTeX are free software. No proprietary editor is required; the
+  documents can be edited on *any* computer with *any* editor. VS Code,
+  Positron and RStudio have Quarto support with a live preview.
+
+Pure text format
+: The source text -- the `.qmd` files -- is pure text. This makes the documents
+  ideal for version control with git. This in turn enables efficient
+  collaboration between you and your supervisor, e.g. via issues and pull
+  requests.
+
+Splitting large documents
+: Every chapter lives in its own file in the folder `chapters/`. The order of
+  the chapters is defined in `_quarto.yml`.
+
+Separating layout/content
+: The layout of the entire document is defined once, in the Quarto extension
+  in `_extensions/thk-thesis/`. You can concentrate fully on writing.
+
+Professional result
+: A document typeset with LaTeX looks more professional than a corresponding
+  document created with word processing. This is especially true for math-heavy
+  documents, but other documents also benefit from a uniform layout, consistent
+  gray value of the continuous text, more consistent page breaks and
+  high-quality vector graphics.
+
+Executable
+: Python code in [marimo](https://marimo.io) cells runs while rendering and
+  inserts the resulting figures and tables. Your evaluation then stays
+  reproducible, see @sec-marimo.
+
+The following @sec-hood to @sec-template deal with various aspects that you
+should consider when creating your document.
+
+## Under the Hood {#sec-hood}
+
+In your `.qmd` files, you define what your content is (text with structure,
+images, tables, references, ...) and how it should roughly look in each case
+(e.g. placement of images in *floating environments*, see @sec-figures).
+
+When creating the final document, LaTeX applies a whole host of rules
+"under the hood" that determine how everything can be implemented in
+the best possible way. These rules concern, for example, the proportion of text
+and images per page, spacing within lines, but also special cases such as
+avoiding individual lines of a section alone on a page (so-called
+"orphans" or "widows").
+
+As a result, for example, your illustrations might "jump" while you are
+working on your text. This may well be correct and can be optimized at the end
+if necessary.
+
+In this context, avoid interfering with the design process, e.g. by manually
+inserting line breaks or spacing. Please only make exceptions in justified
+cases.
+
+## Headings {#sec-headings}
+
+In this template, the chapter (`#`) is the highest level of structure. Each
+chapter file starts with exactly one of them. This is followed by sections
+(`##`) and subsections (`###`). These three levels are numbered and appear in
+the table of contents. If you want to structure your text further, there is
+also `####`. A heading gets an identifier for cross-references with
+`{#sec-name}`, an unnumbered heading with `{.unnumbered}`:
+
+```markdown
+# Formal Structure {#sec-formal}
+
+## Sequence {#sec-sequence}
+
+# Abstract {.unnumbered}
+```
+
+Please note that two headings should never directly follow each other in the
+text. A heading should always be followed by some text (see, for example, the
+beginnings of the chapters here on page \pageref{sec-formal} and
+page \pageref{sec-layout}). For further information, see
+@sec-list-of-contents.
+
+## Paragraphs
+
+A new paragraph begins after a blank line in the source text. A single line
+break in the source text has no effect, so you can -- and should -- start a new
+line for each sentence or after about 80 characters. This makes changes easier
+to follow in git. The exact appearance of paragraphs in the finished document
+is determined by the `parskip` option of the document class -- more on this in
+@sec-template.
+
+## Hyphenation {#sec-hyphenation}
+
+The automatic hyphenation in LaTeX works well in principle. However, there
+can always be minor problems and undesired results. If you want to influence
+the hyphenation for a specific word, add a `\hyphenation{...}` command to
+`tex/macros.tex` to specify the permitted hyphenation points. This also allows
+you to ensure that certain words are never hyphenated, for example proper names.
+
+For example, words containing a hyphen are *only* separated there, which
+can lead to lines not being set correctly, resulting in a warning (see
+@sec-compilation). In such cases, you would have to specify additional
+hyphenation points manually.
+
+## Enumerations
+
+Markdown provides
+
+* bulleted lists with `*` or `-`,
+* numbered lists with `1.`, `2.`, ...,
+* definition lists (a term in one line, followed by `: definition`, as at
+  the beginning of this chapter).
+
+The exact appearance is set globally for the document.
+
+## Illustrations {#sec-figures}
+
+When someone looks at your finished thesis, it may well be that they first leaf
+through it roughly, hardly reading the text but looking at the illustrations.
+Hence the "rule" that you should be able to understand the most
+important points of the thesis in this way.
+
+Illustrations never stand alone but are described by the *caption*. It
+should contain everything that is necessary to understand the illustration.
+Only in exceptional cases must the caption refer to the text. Conversely, each
+figure must be referenced at least once in the text, see also
+@sec-references.
+
+In the following two sections, a distinction is made between images (in
+@sec-images) and vector graphics (in @sec-vector-graphics), as these
+are completely different techniques that should be used appropriately in each
+case.
+
+Remember that not everyone can see all colors equally well. Around 10\ % of
+men in Germany, for example, are affected by red-green color-blindness. Your
+thesis may also be printed in black and white. Therefore, you should ideally
+design illustrations in such a way that they are understandable even without
+colors.
+
+### Images {#sec-images}
+
+You include an image with `![Caption](path){#fig-name}`. The identifier
+starting with `fig-` makes it a numbered figure that floats to an optimal
+position, see @fig-kunst.
+
+![Perhaps this is art?](/images/ThkKunst.png){#fig-kunst width=35%}
+
+```markdown
+![Perhaps this is art?](/images/ThkKunst.png){#fig-kunst width=35%}
+```
+
+Where a figure may be placed is controlled by `fig-pos` (in this template
+`tbh`): `t` stands for the top of the page, `b` for the bottom and `h` for
+"here", which means the position within the text. If you need to save space,
+`t` and `b` are preferable.
+
+Attention: Many contents such as formulas, code, diagrams, visualization of
+data, etc. should not be inserted as an image, but in a suitable form. See the
+following section on vector graphics.
+
+### Vector Graphics {#sec-vector-graphics}
+
+You do not need to insert simple illustrations (e.g. coordinate systems,
+flowcharts, etc.) as an image. Instead, you can generate them directly in the
+source code. The powerful TikZ package is ideal for this: @fig-fleuret is
+drawn by `figures/fleuret.tex` from the data in `data/pointsFleuret.csv`.
+
+::: {#fig-fleuret}
+
+```{=latex}
+\input{figures/fleuret.tex}
+```
+
+A beautiful graphic generated in the source code!
+:::
+
+````markdown
+::: {#fig-fleuret}
+```{=latex}
+\input{figures/fleuret.tex}
+```
+
+A beautiful graphic generated in the source code!
+:::
+````
+
+One advantage is that your document remains smaller. Another is that the
+illustrations usually look more attractive. This is especially true when
+viewing on a screen, as vector graphics can be scaled to any size. You can find
+lots of examples of TikZ on the Internet. There is also an up-to-date
+book [@kottwitz:tikz].
+
+Alternatively, you can create plots from your data with Python while
+rendering, see @sec-marimo.
+
+## Tables {#sec-tables}
+
+Tables are written as *pipe tables*. The caption follows after the table,
+introduced by a colon, together with an identifier starting with `tbl-`.
+
+| Heading left | Heading right |
+|-------------:|--------------:|
+|            1 |          2222 |
+|           10 |           222 |
+|          100 |            22 |
+
+: A simple table {#tbl-example}
+
+```markdown
+| Heading left | Heading right |
+|-------------:|--------------:|
+|            1 |          2222 |
+
+: A simple table {#tbl-example}
+```
+
+The colons in the second line define the alignment of the columns. For more
+complex tables (merged cells, colored rows), you can use grid tables or raw
+LaTeX, e.g. with the `booktabs` and `tabularx` packages.
+
+## Computations with marimo {#sec-marimo}
+
+If your thesis contains measurements, simulations or other evaluations, you
+should not paste their results into the text by hand. Instead, put the Python
+code that produces figures and tables directly into the chapter. Quarto runs it
+on every render with [marimo](https://marimo.io), a reactive Python notebook,
+so text, figures and data cannot get out of sync.
+
+A marimo cell is a code block with the class `.marimo`. A chapter with such
+cells needs two entries in its front matter (at the very top of the file, as
+in this chapter): `engine: marimo` and the Python packages it uses:
+
+```yaml
+---
+engine: marimo
+pyproject: |
+  requires-python = "==3.13.*"
+  dependencies = [
+    "marimo==0.25.2",
+    "matplotlib==3.11.2",
+    "pandas==3.1.1",
+    "tabulate==0.10.0",
+  ]
+---
+```
+
+The packages are installed automatically into an isolated environment by
+[uv](https://docs.astral.sh/uv/), which you need to install once
+(`make check` tells you whether it is there). Pin exact versions (`==`) as
+above: computed results in a thesis must be reproducible. The packages these
+depend on are frozen by a date, `UV_EXCLUDE_NEWER` in the file `_environment`:
+uv uses no release published after it. Move the date forward only on purpose
+(`make python-date`), and keep it fixed once you submit. All cells of a chapter form one
+marimo app, i.e. a later cell can use the variables of an earlier one. Code
+is run in the folder of the project, so paths such as `data/...` start there.
+By default, only the output of a cell appears in the PDF; with `#| echo: true`
+the code is shown as well, as in the following cells.
+
+The first cell loads the data of @fig-fleuret and defines a small helper
+`figure()`. It saves a matplotlib figure as vector PDF and inserts it as a
+numbered figure with a caption and the identifier `fig-<label>`:
+
+```{python .marimo}
+#| echo: true
+import marimo as mo
+import matplotlib.pyplot as plt
+import pandas as pd
+from pathlib import Path
+
+data = pd.read_csv("data/pointsFleuret.csv", names=["x", "y", "z"])
+
+def figure(fig, label, caption, width="70%"):
+    Path("_generated").mkdir(exist_ok=True)
+    fig.savefig(f"_generated/{label}.pdf", bbox_inches="tight")
+    plt.close(fig)
+    return mo.md(f"![{caption}](/_generated/{label}.pdf)"
+                 f"{{#fig-{label} width={width}}}")
+```
+
+The next cell creates @fig-measurements:
+
+```{python .marimo}
+#| echo: true
+fig, ax = plt.subplots(figsize=(5, 3))
+ax.plot(data.x, data.y, "o", color="#CF1820", label="$y$")
+ax.plot(data.x, data.z, "x", color="#AF368C", label="$z$")
+ax.set_xlabel("$x$")
+ax.legend()
+figure(fig, "measurements", "The data of @fig-fleuret, plotted with matplotlib")
+```
+
+A table is created as Markdown text with `mo.md()`; the caption and the
+identifier are added by a surrounding div, as for any other content
+(@tbl-statistics):
+
+::: {#tbl-statistics}
+```{python .marimo}
+#| echo: true
+stats = data.describe().loc[["mean", "std", "min", "max"]]
+mo.md(stats.round(3).to_markdown())
+```
+
+Statistics of the measured values
+:::
+
+The figures are written to the folder `_generated/`, which is not part of the
+repository. Rendering a chapter with marimo cells takes a few seconds longer;
+the first render also downloads the packages. For larger evaluations, it is
+often more convenient to develop the code in a separate marimo notebook
+(`uvx marimo edit --sandbox notebooks/analysis.py`) and to move only the final
+plotting and table code into the chapter.
+
+## List of Figures and Tables {#sec-captions}
+
+Quarto creates the list of figures and the list of tables automatically. All
+figures and tables with an identifier and a caption appear there
+(see @sec-images and @sec-tables).
+
+The caption is used by default for these lists. This text is often too long.
+You can therefore specify a shorter version with the attribute `fig-scap`
+(for figures) or `tbl-scap` (for tables). See also @sec-ref-figures.
+
+## Equations {#sec-formulas}
+
+One of the greatest strengths of LaTeX is that you have many possibilities to
+write down formulas simply and beautifully. You can use LaTeX math directly in
+Markdown: inline between single dollar signs, displayed between double dollar
+signs, followed by an identifier starting with `eq-`. Here is just a small
+example (@eq-gauss):
+
+$$
+\begin{aligned}
+\sum_{i=1}^{n} i &= {\color{THRed}1} + {\color{blue}2} + \ldots + {\color{blue}(n-1)} + {\color{THRed}n} \\
+                 &= {\color{THRed}(1 + n)} + {\color{blue}(2 + (n-1))} + \ldots \\
+                 &= \frac{n}{2} \cdot (n+1)
+\end{aligned}
+$$ {#eq-gauss}
+
+However, simple formulas in the text such as $x \in \mathbb{N}$ are of course
+also possible. A common mistake here is that the "math mode" is
+forgotten in the text: We are talking about the $x$-value and *not* the
+x-value.
+
+The error is just as common the other way round, i.e. text is written in math
+mode: $a_{wrong} = 42$, but $a_{\mathit{correct}} = 42$, perhaps also
+$a_{\text{correct}} = 42$.
+
+Functions such as $\sin$ are automatically displayed well, as in
+
+$$
+\sin \alpha = \left( \frac{a}{c} \right)
+$$ {#eq-sine}
+
+The brackets have only been inserted here to demonstrate the corresponding
+mechanism: automatic scaling of brackets!
+
+Only equations with an identifier get a number, so number exactly those you
+refer to. A reference `@eq-gauss` gives "@eq-gauss"; `-@eq-gauss` gives only
+the number in parentheses, e.g. "by -@eq-gauss and -@eq-sine". This is a
+customization of the template, see @sec-customizations.
+
+Sometimes you want to use your own "operator" that should look the
+same. This is exactly what the `\DeclareMathOperator` command is for,
+allowing you to add missing functions such as $\sgn(x)$.
+
+It is advisable to give all mathematical symbols that you use in your work
+meaningful names in the source code; the easiest way to do this is with the
+`\newcommand` command in `tex/macros.tex`. You can then customize how you want
+to display the weight vector $\vecW$ in the entire document or what the
+imaginary unit $\ci$ with $\ci^2 = -1$ should look like. Of course, this
+assumes that you use the designations consistently. However, this also makes
+your source code easier to read!
+
+## Theorems, Definitions and Proofs {#sec-theorems}
+
+Mathematical statements are written as divs whose identifier starts with the
+type of the statement. An optional heading inside gives the statement a name.
+A proof follows in a div with the class `.proof`; it ends with a box.
+
+::: {#def-triangular}
+## Triangular number
+For $n \in \mathbb{N}$, the $n$-th *triangular number* is
+$T_n = \sum_{i=1}^{n} i$.
+:::
+
+::: {#thm-gauss}
+## Gauss
+For every $n \in \mathbb{N}$, $T_n = \frac{n(n+1)}{2}$.
+:::
+
+::: {.proof}
+Pair the first and the last summand, the second and the second to last, and so
+on, as in @eq-gauss. Each of the $\frac{n}{2}$ pairs sums to $n+1$; for odd $n$,
+the middle summand is half a pair.
+:::
+
+::: {#lem-consecutive}
+For every $n \geq 2$, $T_n + T_{n-1} = n^2$.
+:::
+
+::: {.proof}
+By @thm-gauss, $T_n + T_{n-1} = \frac{n(n+1)}{2} + \frac{(n-1)n}{2} = n^2$.
+:::
+
+::: {#cor-integer}
+For every $n \in \mathbb{N}$, the product $n(n+1)$ is even.
+:::
+
+::: {#prp-cubes}
+## Nicomachus
+For every $n \in \mathbb{N}$, $\sum_{i=1}^{n} i^3 = T_n^2$.
+:::
+
+::: {#exm-four}
+$T_4 = 1 + 2 + 3 + 4 = 10 = \frac{4 \cdot 5}{2}$.
+:::
+
+::: {#rem-legend}
+According to a well-known anecdote, Gauss found @thm-gauss as a schoolboy.
+:::
+
+The source of @def-triangular, @thm-gauss and its proof:
+
+````markdown
+::: {#def-triangular}
+## Triangular number
+For $n \in \mathbb{N}$, the $n$-th *triangular number* is
+$T_n = \sum_{i=1}^{n} i$.
+:::
+
+::: {#thm-gauss}
+## Gauss
+For every $n \in \mathbb{N}$, $T_n = \frac{n(n+1)}{2}$.
+:::
+
+::: {.proof}
+Pair the first and the last summand, ...
+:::
+````
+
+All statements of a chapter share one counter: @def-triangular is followed by
+@thm-gauss, @lem-consecutive and so on, which makes each number easy to find
+(a customization, see @sec-customizations).
+Theorems, lemmas, corollaries and propositions are set in italics;
+definitions and examples upright; remarks upright with an italic heading.
+
+| Statement | Identifier | Reference gives |
+|-----------|------------|-----------------|
+| Definition | `#def-...` | @def-triangular |
+| Theorem | `#thm-...` | @thm-gauss |
+| Lemma | `#lem-...` | @lem-consecutive |
+| Corollary | `#cor-...` | @cor-integer |
+| Proposition | `#prp-...` | @prp-cubes |
+| Example | `#exm-...` | @exm-four |
+| Remark | `#rem-...` | @rem-legend |
+
+: Mathematical statements {#tbl-statements}
+
+Further types are conjecture (`#cnj-`), exercise (`#exr-`) and solution
+(`#sol-`). A statement without an identifier, e.g. `::: {.theorem}`, is not
+numbered.
+
+## Source Code, Pseudocode {#sec-listing}
+
+If a section of source code is to be displayed in the final thesis, the
+obvious idea is to simply take a screenshot of it and display it as an image.
+However, this is not a good idea, as the text pixelates when the finished
+document is zoomed in. Instead, use a *fenced code block* with the name of the
+programming language; Quarto then highlights the syntax automatically. With an
+identifier starting with `lst-` and a caption, the code becomes a numbered
+listing, see @lst-quicksort.
+
+```{#lst-quicksort .py lst-cap="Quicksort in Python"}
+def quicksort(xs):
+    if len(xs) <= 1:
+        return xs
+    pivot, *rest = xs
+    smaller = [x for x in rest if x < pivot]
+    larger = [x for x in rest if x >= pivot]
+    return quicksort(smaller) + [pivot] + quicksort(larger)
+```
+
+The source of this listing looks like this:
+
+````markdown
+```{#lst-quicksort .py lst-cap="Quicksort in Python"}
+def quicksort(xs):
+    ...
+```
+````
+
+The language is given by its name or file extension (`.py`, `.c`, `.java`,
+`.rust`, ...). In chapters with marimo cells (@sec-marimo), always write
+`.py` for Python listings: a block marked `.python` is treated as a marimo
+cell there and stops the render.
+
+The colors are controlled by the option `highlight-style` in `_quarto.yml`.
+To show a file from your project, use the include shortcode inside a code
+block, e.g. `{{{< include ../src/main.c >}}}`.
+
+*Pseudocode* is written as an algorithm, one of Quarto's statement types: a
+div whose identifier starts with `alg-`, with an optional name as heading and
+the pseudocode in a raw LaTeX block (@alg-euclid). The commands (`\Procedure`,
+`\While`, `\State`, `\Return`, ...) are those of the package `algpseudocodex`.
+Algorithms are numbered separately from theorems and are listed in the List of
+Algorithms.
+
+::: {#alg-euclid}
+## Euclid
+
+```{=latex}
+\begin{algorithmic}[1]
+\Procedure{Euclid}{$a, b$}
+  \While{$b \neq 0$}
+    \State $(a, b) \gets (b, a \bmod b)$
+  \EndWhile
+  \State \Return $a$
+\EndProcedure
+\end{algorithmic}
+```
+:::
+
+````markdown
+::: {#alg-euclid}
+## Euclid
+
+```{=latex}
+\begin{algorithmic}[1]
+\Procedure{Euclid}{$a, b$}
+  \While{$b \neq 0$}
+    \State $(a, b) \gets (b, a \bmod b)$
+  \EndWhile
+  \State \Return $a$
+\EndProcedure
+\end{algorithmic}
+```
+:::
+````
+
+## Further Directories {#sec-glossaries}
+
+Additional directories are created using the LaTeX `glossaries` package. A
+glossary and lists of abbreviations and symbols are already set up. All entries
+are defined in the file `tex/glossary.tex`; only entries that are actually
+used in the text appear in the lists. The lists are inserted after the table
+of contents and listed there. Which lists are printed is set in the
+`thesis: lists:` block of `_quarto.yml`.
+
+The template uses the `\makenoidxglossaries` mode of the package, so no
+external program is needed to sort the entries.
+
+### Creating a Glossary
+
+An entry in the glossary is defined in `tex/glossary.tex`:
+
+```latex
+\newglossaryentry{dog}{name={Dog}, description={Hairy, four-legged mammal}}
+```
+
+The term is then displayed in the text with `\gls{dog}`. Want an example? The
+\gls{dog} is man's best friend.
+
+### Creating a List of Abbreviations
+
+An abbreviation is defined in `tex/glossary.tex` with the label, the
+abbreviation and the long form:
+
+```latex
+\newacronym{svm}{SVM}{support vector machine}
+```
+
+It is then used in the text with `\gls{svm}`. LaTeX automatically ensures that
+the abbreviation is written out the first time it is mentioned in the text. For all subsequent
+mentions, only the abbreviation is then displayed. Want an example? This is a
+\gls{svm}. And here is another \gls{svm}. Use `\glspl{svm}` for the plural.
+
+### Creating a List of Symbols
+
+A symbol is defined like a glossary entry, but with the additional key
+`type=symbols`. The command `\gls{label}` can then be used to display the
+symbol in the text -- also in formulas. Need an example? The force
+\gls{sym:force} is defined according to the following equation:
+
+$$
+\gls{sym:force} = m \cdot \vec{a}
+$$
+
+## References {#sec-references}
+
+Everything numbered gets an identifier; `@identifier` in the text then gives
+the name and the number, and the PDF links to it. @tbl-references lists all
+numbered elements of this template.
+
+| Element | Identifier | Example | Reference gives |
+|---------|------------|---------|-----------------|
+| Chapter, section | `{#sec-...}` | @sec-headings | @sec-headings |
+| Figure | `{#fig-...}` | @sec-images | @fig-kunst |
+| Table | `{#tbl-...}` | @sec-tables | @tbl-example |
+| Equation | `{#eq-...}` | @sec-formulas | @eq-gauss |
+| Statement (theorem, ...) | `#thm-...` etc. | @sec-theorems | @thm-gauss |
+| Listing | `#lst-...` | @sec-listing | @lst-quicksort |
+| Algorithm | `#alg-...` | @sec-listing | @alg-euclid |
+
+: Numbered elements and their references {#tbl-references}
+
+Sections, figures, tables, listings, equations and algorithms each have their
+own counter; all mathematical statements share one. If you only want the number,
+write `-@fig-kunst` (-@fig-kunst); for the page, use `\pageref{fig-kunst}`
+(page \pageref{fig-kunst}). Several references at once: `[@thm-gauss;
+@lem-consecutive]` gives [@thm-gauss; @lem-consecutive].
+
+Every figure and every table must be referenced in the text; no numbered
+environments may simply "hang in the air". In contrast, sections and equations
+do not all have to be explicitly referenced. However, you can help your readers
+by thinking about meaningful references.
+
+## Special Spaces and Signs {#sec-special-cases}
+
+A line break (or even a page break) can always occur at spaces. This should be
+avoided in some cases, partly because lines should not start with numbers. A
+typical example is "Figure\ 3". Here you need a so-called protected
+space after "Figure", which is created in Markdown with a backslash followed
+by a space (`Figure\ 3`). Cross-references such as `@fig-kunst` get one
+automatically.
+
+Horizontal spacing between words and sentences is dynamically adjusted in each
+line. This template uses `\frenchspacing`, so the space after the dot in
+abbreviations such as "e.g." is not too large.
+
+As with spaces, there are also different lengths for horizontal dashes. For
+dashes -- here, for example -- or if "to" is meant (as in 14:00--16:00), the
+single hyphen (minus sign) is not sufficient, the appropriate dash is created
+by a double minus (`--`).
+
+Only a few characters have a special function in Markdown, e.g. `*`, `_`, `#`,
+`$`, `@`, `[` and `]`, as well as `<` and `\`. If you want to output them
+literally, put a backslash in front of them: `\$` gives \$, `\@` gives \@.
+Characters such as % and & that are problematic in LaTeX can be typed
+directly.
+
+Quotation marks are set automatically in the correct style of the document
+language when you type straight quotes ("..." or '...').
+
+## Selecting the Basic Font
+
+By default, LaTeX uses a serif font (Latin Modern) for continuous text. Serif
+fonts are advantageous for printed work because the serifs emphasize the
+baseline and thus help the eye to jump back to the beginning of the next line
+at the end of the line. In addition, the different stroke widths lead to
+clearer word images and thus support the reading process.
+
+However, if such a document is viewed on an old monitor with a low resolution,
+the fine serifs may no longer be displayed properly. In such a case, it may be
+advantageous to use a sans serif font. It may also be that sans serif fonts are
+preferred for reasons of accessibility.
+
+As this template uses `lualatex`, you can use any font installed on your
+computer. Add the following to the `thk-thesis-pdf` format in
+`_quarto.yml`:
+
+```yaml
+format:
+  thk-thesis-pdf:
+    mainfont: "Arial"     # or e.g. "TeX Gyre Pagella", "Source Serif 4"
+    sansfont: "Arial"
+```
+
+## Metadata for the PDF Viewer
+
+Some PDF viewers can display additional metadata, such as the name of the
+author, the title of the document (also different from the name of the file) or
+keywords. This template takes them from `book: title`, `book: author` and
+`keywords` in `_quarto.yml`.
+
+In addition, links in the document can be highlighted as colored text.
+For a printed thesis this is usually not wanted, so it is switched off. If
+you prefer colored links on screen, set `colorlinks: true` in the format
+options.
+
+## Switch Between Single and Double-sided Layout
+
+This template is optimized for a one-sided layout. The left and right margins
+are the same size on all pages and new chapters start immediately on the next
+page. When the finished PDF document is viewed on the computer, it looks just
+right. However, if the document is to be printed double-sided, the layout can
+be adjusted slightly. Typically, the inner margins are then slightly narrower
+than the outer margins. New chapters always start on a new, right-hand
+page -- which can lead to individual blank pages between the chapters. This
+looks better for double-sided documents.
+
+To activate the double-sided layout, add the following lines to the
+`thk-thesis-pdf` format in `_quarto.yml`:
+
+```yaml
+    classoption: [BCOR=8mm, headings=normal, parskip=half, headsepline,
+                  automark, listof=totoc, bibliography=totoc,
+                  twoside, open=right]
+```
+
+## Compile {#sec-compilation}
+
+You create the PDF with `make` (or `quarto render`) in the folder of your
+thesis; it ends up in `_book/thesis.pdf`. During writing, `make preview` (or
+`quarto preview`) is more convenient: the PDF is updated every time you save a
+file. Your editor (VS Code, Positron, RStudio) has buttons for both. `make help`
+lists all available commands.
+
+Rendering a large document takes some time. As you usually work on only a few
+chapters at a time, you can comment out the remaining chapters in
+`_quarto.yml` with `#`.
+
+Basically, the aim should be for your document to compile without warnings. The
+best thing to do is to regularly take care of rectifying any problems.
+
+A typical warning is about an unresolved cross-reference or citation, shown as
+`?@fig-xyz` in the PDF. In this case, check the identifier for typos.
+
+Boxes that are too full (a line sticks out into the margin) or too empty (a
+line with large gaps) are listed by `make warnings`: it renders the thesis,
+keeps the LaTeX log and shows each warning with the matching lines of the
+generated `thesis.tex`, so you can find the place in your text. To avoid lines that are too
+long, it sometimes helps to mark hyphenation points (see @sec-hyphenation).
+Otherwise, a sentence may have to be minimally reworded.
+
+Every push to the repository on GitHub also renders the thesis automatically;
+the PDF can be downloaded from the *Actions* tab. Your supervisor therefore
+always sees the current state.
+
+## This Template {#sec-template}
+
+The layout is defined by the Quarto extension in `_extensions/thk-thesis/`. It
+uses KOMA-Script[^koma], a "collection of classes and packages for LaTeX",
+with carefully chosen typographic defaults. Please do not change the files in
+the extension; your own LaTeX commands belong in `tex/macros.tex`, your glossary
+entries in `tex/glossary.tex`. Improvements of the template can then be
+installed with `make update-template`.
+
+The document class options (`classoption` in the extension) determine, among
+other things, the font size, the binding correction (`BCOR`), the size of the
+headings (`headings`) and the spacing between paragraphs (`parskip`). In
+principle, you can also influence the size of the margins with the `DIV`
+option, but this is not recommended. The margins are automatically set so that
+lines have a length that is easy to read.
+
+The header shows the current chapter heading at the top right of the page; the
+page number is at the bottom right. The most important packages are:
+
+`babel`
+: Selects English (from `lang` in `_quarto.yml`) and its hyphenation patterns.
+
+`selnolig`
+: Ensures that ligatures are set correctly (with `lualatex`).
+
+`microtype`
+: Optimizes the appearance of the text (type area).
+
+`csquotes`
+: Typesets quotation marks correctly.
+
+`tikz` and `pgfplots`
+: Generate images directly in the source code, see @sec-vector-graphics.
+
+`hyperref`
+: Clickable links and bookmarks in the PDF.
+
+`fvextra`
+: Wraps long lines in code blocks instead of letting them run into the margin.
+
+`biblatex`
+: Citations and bibliography, processed with `biber`, see @sec-literature.
+
+`amsmath`, `amssymb` and `mathtools`
+: Great expansion of the possibilities for displaying mathematical content.
+
+`glossaries`
+: Glossary, list of abbreviations and list of symbols, see @sec-glossaries.
+
+`amsthm` and `algpseudocodex`
+: Theorems, definitions and proofs (@sec-theorems); pseudocode in algorithms
+  (@sec-listing).
+
+### Differences from Quarto's Defaults {#sec-customizations}
+
+Everything in this template is standard Quarto, except for a few
+customizations in the extension `_extensions/thk-thesis/`. If you read
+Quarto's documentation, these are the places where the template behaves
+differently:
+
+Shared counter for statements
+: Quarto numbers each type of statement separately (Definition 3.1,
+  Theorem 3.1, Lemma 3.1). Here, all statements of a chapter share one
+  counter (Definition 3.1, Theorem 3.2, Lemma 3.3), see @sec-theorems.
+  Algorithms keep their own counter.
+
+Equation references
+: Quarto refers to an equation numbered (3.1) as "Equation 3.1". Here,
+  `@eq-...` gives "Equation (3.1)" and `-@eq-...` gives "(3.1)", matching the
+  number next to the equation.
+
+List of Algorithms
+: Algorithms (`#alg-...`) are typeset as in Quarto, but are also collected in
+  a List of Algorithms after the table of contents.
+
+Front matter and back matter
+: Cover page, abstract, the lists after the abstract (table of contents,
+  figures, tables, listings, algorithms, glossary, abbreviations, symbols)
+  with Roman page numbers, the position of the bibliography before the
+  appendix, and the declaration are generated from the `thesis:` block in
+  `_quarto.yml`.
+
+Layout
+: KOMA-Script class `scrreprt` with header and page numbers as in the TH Köln
+  LaTeX template, biblatex instead of Quarto's default bibliography processing,
+  and code blocks that wrap long lines. The titles "Contents" and "Appendix"
+  (Quarto: "Table of contents", "Appendices") are set under `language:` in
+  `_quarto.yml`.
+
+The template's own Lua filter (`thk-thesis.lua`) and LaTeX files
+(`thk-header.tex`, `partials/`) contain all of this; their comments mark each
+customization.
+
+[^koma]: <https://komascript.de>

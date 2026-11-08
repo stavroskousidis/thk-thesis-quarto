@@ -1,0 +1,3 @@
+# B {.appendix}
+
+Appendix cites [@EPRINT:Odd.Key/14; @C:Real01].

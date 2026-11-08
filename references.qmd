@@ -1,0 +1,13 @@
+# Bibliography {.unnumbered}
+
+<!-- Remove this note for your thesis. -->
+As explained in @sec-bib-content, only the sources that are actually referenced
+in a paper are listed in the bibliography. Therefore, please always check the
+bibliography of your paper to ensure that all sources cited -- and only
+these -- have been included. This does not apply to the following list; most of
+the sources listed here are not cited in this template (see `nocite` in
+`_quarto.yml`). This is merely an example of a bibliography with recommended
+reading for academic writing.
+
+::: {#refs}
+:::

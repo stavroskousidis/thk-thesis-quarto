@@ -1,0 +1,31 @@
+# A
+
+Plain [@C:Real01] and textual @EC:Text02 says. Trailing punctuation @C:Real01.
+Braced @{C:Brace+09} and see @fig-x, @sec-intro, @tbl-y.
+Inline code `[@C:Code03]` and ``double `@C:Code03b` ticks``.
+Escaped \@C:Esc08 is not a citation.
+Unknown @C:Missing99 should be reported.
+
+<!-- [@C:Comment05]
+spanning lines -->
+
+```python
+@C:Fence04
+def f(): pass
+```
+
+```{python .marimo}
+mo.md("[@C:Marimo12]")
+```
+
+```{=latex}
+\cites[see][p.~3]{C:Raw06}{EC:Raw07,EC:Raw07b}
+```
+
+Inline raw \citet{C:InlineRaw13} in text.
+
+{{< include _inc.qmd >}}
+
+```{=latex}
+\input{tex/fig.tex}
+```

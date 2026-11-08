@@ -1,0 +1,47 @@
+@comment{ This file is a fixture. @InProceedings{C:FakeInComment, title="x"} }
+
+@InProceedings{C:Real01,
+  author =       "Alice and Bob",
+  title =        "A title with {Braces} and a quote \" inside",
+  crossref =     crypto01,
+}
+
+@InProceedings{EC:Text02,
+  author =       "Carol",
+  title =        "Text",
+  crossref =     "EC16",
+}
+
+@InProceedings{C:Brace+09, author = "Dan", title = "Plus in key", crossref = crypto01}
+@Misc{EPRINT:Odd.Key/14, author = "Eve", title = {Odd {key} chars}, howpublished = "ePrint 2014/001"}
+@InProceedings(C:Raw06, author = "Frank", title = "Paren-delimited", crossref = crypto01)
+@InProceedings{EC:Raw07, author = "Grace", title = "Raw 7", crossref = ec16}
+@InProceedings{EC:Raw07b, author = "Heidi", title = "Raw 7b", crossref = ec16}
+@InProceedings{C:Inc10, author = "Ivan", title = "Included", crossref = crypto01}
+@InProceedings{C:Nocite11, author = "Judy", title = "Nocite", crossref = crypto01}
+@InProceedings{C:InlineRaw13, author = "Ken", title = "Inline raw", crossref = crypto01}
+@InProceedings{C:Tex17, author = "Leo", title = "From tex", crossref = crypto01}
+@InProceedings{C:Code03, author = "X", title = "must not be selected"}
+@InProceedings{C:Code03b, author = "X", title = "must not be selected"}
+@InProceedings{C:Fence04, author = "X", title = "must not be selected"}
+@InProceedings{C:Comment05, author = "X", title = "must not be selected"}
+@InProceedings{C:Esc08, author = "X", title = "must not be selected"}
+@InProceedings{C:Marimo12, author = "X", title = "must not be selected"}
+@InProceedings{C:Orphan15, author = "X", title = "must not be selected"}
+@InProceedings{C:TexComment16, author = "X", title = "must not be selected"}
+
+@Proceedings{C01,
+  title =        crypto01name,
+  booktitle =    crypto01name,
+  publisher =    springer,
+  series =       lncs,
+  year =         2001,
+}
+
+@Proceedings{EC16,
+  title =        ec16name,
+  booktitle =    ec16name,
+  publisher =    springer,
+  series =       lncs,
+  year =         2016,
+}

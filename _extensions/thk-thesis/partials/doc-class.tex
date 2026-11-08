@@ -1,0 +1,25 @@
+\documentclass[
+$for(babel-otherlangs)$
+  $babel-otherlangs$,
+$endfor$
+$if(babel-lang)$
+  $babel-lang$,
+$endif$
+$if(fontsize)$
+  $fontsize$,
+$endif$
+$if(papersize)$
+  $papersize$paper,
+$endif$
+$for(classoption)$
+  $classoption$$sep$,
+$endfor$
+]{$documentclass$}
+%% --- thk-thesis: packages that must come before Quarto's own ---------------
+% scrhack: makes the float package (used by Quarto for listings) KOMA-aware.
+\RequirePackage{scrhack}
+% mathtools must be loaded before unicode-math, fvextra before csquotes.
+\RequirePackage{mathtools}
+% unicode-math only informs that it adapts mathtools' \overbracket and colons
+\PassOptionsToPackage{warnings-off={mathtools-colon,mathtools-overbracket}}{unicode-math}
+\RequirePackage{fvextra}

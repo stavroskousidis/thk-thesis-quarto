@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TH Köln Thesis Template (Quarto)</title>
+  <meta name="description" content="Preview of the Quarto thesis template for Bachelor's and Master's theses at TH Köln.">
+  <style>
+    :root { --fg: #1d1d1f; --muted: #5f6368; --bg: #ffffff; --accent: #cf1820; --line: #e3e3e6; }
+    @media (prefers-color-scheme: dark) {
+      :root { --fg: #ececef; --muted: #a4a7ad; --bg: #16171a; --accent: #ff5a5f; --line: #2c2e33; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg);
+           font: 17px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { max-width: 44rem; margin: 0 auto; padding: 3rem 1rem 4rem; }
+    .bar { display: flex; height: 4px; margin-bottom: 2.5rem; }
+    .bar span { flex: 1; } .r { background: #cf1820; } .o { background: #ec6525; } .p { background: #af368c; }
+    h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 .5rem; }
+    p { margin: 0 0 1rem; }
+    .muted { color: var(--muted); }
+    .actions { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.75rem 0 2.5rem; }
+    a.button { display: inline-block; padding: .6rem 1rem; border-radius: 6px; text-decoration: none;
+               border: 1px solid var(--line); color: var(--fg); }
+    a.button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    ul { padding-left: 1.2rem; } li { margin: .25rem 0; }
+    footer { margin-top: 3rem; font-size: .9rem; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+<main>
+  <div class="bar" aria-hidden="true"><span class="r"></span><span class="o"></span><span class="p"></span></div>
+  <h1>TH Köln Thesis Template (Quarto)</h1>
+  <p class="muted">For Bachelor's and Master's theses supervised by Stavros Kousidis.</p>
+  <p>
+    The thesis is written in Markdown and typeset with LaTeX in the layout of the
+    official TH Köln thesis template. The PDF below is the template itself: it
+    explains how to write, cite and include computations.
+  </p>
+  <div class="actions">
+    <a class="button primary" href="thesis.pdf">Open the preview (PDF)</a>
+    <a class="button" href="https://github.com/stavroskousidis/thk-thesis-quarto">Template repository</a>
+  </div>
+  <ul>
+    <li>Cover page, declaration and lists generated from one configuration file, for theses written in English</li>
+    <li>Numbered, cross-referenced equations, figures, tables, theorems, definitions and algorithms</li>
+    <li>biblatex citations, optional CryptoBib for cryptography papers</li>
+    <li>Optional Python in marimo cells: figures and tables computed from your data</li>
+    <li>Every push to your repository renders the PDF on GitHub</li>
+  </ul>
+  <footer class="muted">
+    Independently maintained adaptation of the TH Köln LaTeX thesis template,
+    not an official TH Köln publication.<br>
+    Built from commit <code>__COMMIT__</code> on __DATE__ ·
+    <a href="https://stavroskousidis.github.io/theses/">Thesis supervision</a>
+  </footer>
+</main>
+</body>
+</html>

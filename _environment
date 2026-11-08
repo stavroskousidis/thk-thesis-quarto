@@ -1,0 +1,7 @@
+# Environment for every Quarto render (also from the editor's buttons).
+#
+# UV_EXCLUDE_NEWER freezes the Python packages of marimo cells: uv only uses
+# releases published before this date, for direct AND indirect dependencies.
+# Move it forward deliberately with `make python-date` (e.g. when you need a
+# newer package) and keep it fixed for the final, submitted version.
+UV_EXCLUDE_NEWER=2026-11-07T00:00:00Z

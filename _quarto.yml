@@ -1,0 +1,79 @@
+project:
+  type: book
+  output-dir: _book
+  # Copies the cited CryptoBib entries into bib/cryptobib.bib before each render
+  pre-render: scripts/cryptobib-subset.ts
+
+book:
+  title: "Template for Academic Theses at TH Köln"
+  # subtitle: "An optional subtitle"
+  author: "First Name Last Name"
+  date: 2026-11-07
+  output-file: thesis
+  chapters:
+    - index.qmd               # abstract (front matter, Roman page numbers)
+    - chapters/01-introduction.qmd
+    - chapters/02-formal-structure.qmd
+    - chapters/03-layout.qmd
+    - chapters/04-citations.qmd
+    - references.qmd
+  appendices:
+    - appendices/a-supplementary.qmd
+
+# --- About the thesis: everything on the cover page ---------------------------
+thesis:
+  # Placeholders: set `type: bachelor` or `type: master` and your degree.
+  type: "Bachelor's or Master's thesis"   # bachelor | master
+  degree: "Bachelor/Master of Science"    # e.g. "Bachelor of Science"
+  program: "Computer Science"
+  faculty: "Faculty of Computer Science and Engineering Science"
+  student-id: "123 456 789"
+  address:
+    - "Betzdorfer Str. 2"
+    - "50679 Cologne"
+  email: "name.surname@smail.th-koeln.de"
+  supervisor: "Prof. Dr. First Name Last Name"
+  second-reviewer: "Prof. Dr. First Name Last Name"
+  place: "Cologne"
+  # Declaration of authorship. The default wording is the usual TH Köln text;
+  # CHECK it against your examination regulations (Prüfungsordnung) -- some
+  # require a different text, e.g. on the use of AI tools.
+  declaration: end            # end | after-cover | none (anything else: error)
+  # declaration-text: |       # replaces the default wording (Markdown)
+  #   ...
+  lists:                      # which lists to print after the abstract
+    toc: true
+    figures: true
+    tables: true
+    listings: true
+    algorithms: true
+    glossary: true            # entries from tex/glossary.tex that are used via \gls{}
+    acronyms: true
+    symbols: true
+
+lang: en-US                   # theses are written in English: en-US or en-GB
+# Titles as in the TH Köln LaTeX template (Quarto's defaults: "Table of
+# contents", "Appendices")
+language:
+  toc-title-document: "Contents"
+  section-title-appendices: "Appendix"
+date-format: "DD.MM.YYYY"
+keywords: [thesis, template, TH Köln]
+
+bibliography:
+  - bib/references.bib        # your own entries
+  - bib/cryptobib.bib         # cited CryptoBib entries -- GENERATED, do not edit
+# Uncited entries that are listed anyway. The template uses this to show a
+# reading list -- REMOVE IT (and the note in references.qmd) for your thesis.
+nocite: |
+  @Ahrens_2018, @Berger_2010, @Bruhn_2021, @Dahinden_2014, @Ebel_2009,
+  @Eco_2010, @Essel_2017, @Norbert_2019, @Frank_2007, @Fröhlich_2017,
+  @Göttert_2002, @Hirsch_2016, @Karmasin_2019, @Kipman_2018, @Kremer_2018,
+  @Kruse_2018, @Kuehtz_2021, @Lange_2018, @Niederhauser_2019, @Oertner_2014,
+  @Prexl_2019, @Prexl_2021, @Schaller_2020, @Scheuermann_2016,
+  @Schindler_2011, @Stier_2015, @Voss_2022, @Wolfsberger_2016, @Wymann_2021
+
+format:
+  thk-thesis-pdf:
+    keep-tex: false
+    # biblio-style: alphabetic  # e.g. numeric, authoryear, ieee (needs biblatex-ieee)

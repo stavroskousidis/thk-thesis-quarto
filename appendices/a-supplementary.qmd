@@ -1,0 +1,11 @@
+# Supplementary Material {#sec-appendix}
+
+Appendices contain material that would interrupt the flow of the main text,
+e.g. detailed proofs, additional measurements, questionnaires or longer
+listings. They are listed in `_quarto.yml` under `book: appendices:` and are
+numbered with capital letters.
+
+The declaration of authorship follows on the next page. It is generated from
+`_quarto.yml` (`thesis: declaration:`). In some degree programs, the
+declaration must be placed directly after the cover page instead; set
+`declaration: after-cover` in this case.

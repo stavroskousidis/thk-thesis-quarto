@@ -1,0 +1,69 @@
+title: TH Köln Thesis
+author: Stavros Kousidis
+version: 1.0.0
+quarto-required: ">=1.9.20"   # same minimum as README and make check; CI tests 1.11.9
+contributes:
+  formats:
+    pdf:
+      # --- Document class: KOMA-Script report, as in the original LaTeX template
+      documentclass: scrreprt
+      papersize: a4
+      classoption:
+        - BCOR=8mm
+        - headings=normal
+        - parskip=half
+        - headsepline
+        - automark
+        - listof=totoc
+        - bibliography=totoc
+        - open=any
+        - numbers=noendperiod
+      pdf-engine: lualatex
+      number-sections: true
+      # Table of contents and the other lists are placed by thk-thesis.lua
+      # (after the abstract, before chapter 1), so Quarto's own TOC is off.
+      toc: false
+      toc-depth: 2
+      colorlinks: false
+      fig-pos: "tbh"
+      code-block-bg: "#F5F5F5"
+      code-block-border-left: false
+      # --- Bibliography: biblatex + biber. mincrossrefs=999 keeps the
+      #     proceedings volumes of CryptoBib's crypto_crossref.bib out of the
+      #     bibliography (they are only inherited by the cited papers).
+      cite-method: biblatex
+      biblio-style: alphabetic
+      biblatexoptions:
+        - backend=biber
+        - maxbibnames=99
+        - giveninits=false
+        - url=true
+        - doi=true
+        - eprint=false
+        - mincrossrefs=999
+      # Quarto's built-in algorithms are referenced as "alg. 3.1" by default
+      crossref:
+        alg-prefix: Algorithm
+      # --- Styling and the thesis-specific pieces
+      include-in-header:
+        - thk-header.tex
+      template-partials:
+        - partials/doc-class.tex
+        - partials/before-title.tex
+        - partials/before-body.tex
+        - partials/biblio.tex
+      filters:
+        - thk-thesis.lua
+      # Defaults for the thesis block; override in _quarto.yml
+      thesis:
+        type: bachelor
+        declaration: end
+        lists:
+          toc: true
+          figures: true
+          tables: true
+          listings: false
+          algorithms: true
+          glossary: true
+          acronyms: true
+          symbols: true

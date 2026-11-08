@@ -1,0 +1,50 @@
+%% --- thk-thesis: cover page ------------------------------------------------
+%% All labels are filled in by thk-thesis.lua; the values come from the
+%% `thesis:` block in _quarto.yml.
+\pdfbookmark[0]{$thk.labels.cover$}{cover}
+\begin{titlepage}
+\thispagestyle{empty}
+\sffamily
+% TH Köln colour bar across the text width (zero-width box: never overfull)
+\noindent\makebox[0pt][l]{%
+  {\color{THRed}\rule{\dimexpr\textwidth/3\relax}{3pt}}%
+  {\color{THOrange}\rule{\dimexpr\textwidth/3\relax}{3pt}}%
+  {\color{THPurple}\rule{\dimexpr\textwidth/3\relax}{3pt}}}\par
+
+\vfill
+
+{\huge $title$\par}
+$if(subtitle)$
+\medskip
+{\Large $subtitle$\par}
+$endif$
+
+\bigskip
+\noindent
+$thk.kind$ $thk.purpose$\\
+\emph{$thesis.degree$}\\
+$if(thesis.program)$
+$thk.labels.program$ $thesis.program$\\
+$endif$
+$if(thesis.faculty)$
+$thk.labels.faculty$ $thesis.faculty$\\
+$endif$
+$thk.labels.university$
+
+\vfill
+
+\noindent
+\begin{tabular}{@{}ll@{}}
+$for(thk.rows)$
+$it.label$ & $it.value$\\$if(it.gap)$[4mm]$endif$
+$endfor$
+\end{tabular}
+
+\vspace{10mm}
+\noindent
+$if(thesis.place)$$thesis.place$, $endif$$date$
+\end{titlepage}
+
+%% Front matter (abstract, table of contents, lists) is numbered in Roman,
+%% starting again at I with the abstract, as in the TH Köln LaTeX template.
+\pagenumbering{Roman}
